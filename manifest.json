@@ -1,17 +1,23 @@
 {
-    "manifest_version": 3,
-    "name": "eduweb",
-    "version": "1.0",
-    "description": "eduweb使いやすくするChrome拡張",
-    "content_scripts": [
-        {
-            "matches": [
-                "https://eduweb.do-johodai.ac.jp/rishuu_touroku/print/student"
-            ],
-            "js": [
-                "content.js"
-            ],
-            "run_at": "document_end"
-        }
-    ]
+  "manifest_version": 3,
+  "name": "eduweb",
+  "version": "1.0",
+  "description": "eduweb使いやすくするChrome拡張",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://eduweb.do-johodai.ac.jp/rishuu_touroku/print/student"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": [
+		"<all_urls>"
+	]
 }
