@@ -43,7 +43,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 				return null;
 			}
 
-			// テキストブックの取得
+			// 教科書の取得
 			return getTextbook(syllabusData['詳細'])
 				.then(textbookResult => {
 					let textbook_tmp = textbookResult.split('<table class="striped">');
@@ -62,7 +62,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 												}); // Add a copy of extractedTextbook
 												console.log("push");
 												console.log(extractedTextbook);
-												extractedTextbook = {}; // Reset extractedTextbook
+												extractedTextbook = {}; //extractedTextbookをリセット
 											}
 											extractedTextbook["書名"] = (item3.replace('書名:', ''));
 											console.log(item3.replace('書名:', ''));
