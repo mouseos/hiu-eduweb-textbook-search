@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "eduweb",
+  "name": "HIU教科書購入支援ツール",
   "version": "1.0",
-  "description": "eduweb使いやすくするChrome拡張",
+  "description": "eduwebの履修確認画面でシラバス自動検索を行い、使いやすくするChrome拡張",
   "background": {
     "service_worker": "background.js"
   },

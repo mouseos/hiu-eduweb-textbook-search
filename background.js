@@ -1,4 +1,5 @@
 // background.js
+
 function getTextbook(url) {
 	return fetch(url)
 		.then(response => response.text())
@@ -27,8 +28,8 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 
 			while ((match = regex.exec(htmlString)) !== null) {
 				const [, lectureName, department, teacher, detailLink] = match;
-
-				if (department.trim().toLowerCase() === search_department.trim().toLowerCase() && teacher.trim().toLowerCase() === search_teacher.trim().toLowerCase()) {
+				
+				if (department.toLowerCase().includes(search_department.trim().toLowerCase())&& teacher.trim().toLowerCase() === search_teacher.trim().toLowerCase()) {
 					syllabusData = {
 						'講義名': lectureName.trim(),
 						'学科': department.trim(),
@@ -39,6 +40,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 			}
 
 			if (!syllabusData) {
+				//見つからない場合コンソール出力（デバッグ）
 				console.log(search_department + "," + search_teacher + "先生の" + search_word + "の講義は見つかりませんでした。");
 				return null;
 			}
@@ -50,6 +52,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 					let extractedTextbook = {};
 					let extractedTextbooks = [];
 					textbook_tmp.forEach(item => {
+						//教科書に関するタグ部分を抜き出し、各項目に分割
 						if (item.includes('教科書')) {
 							item.split("<li>").forEach(item2 => {
 								if (item2.includes('書名')) {
@@ -59,9 +62,8 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 											if (Object.keys(extractedTextbook).length !== 0) {
 												extractedTextbooks.push({
 													...extractedTextbook
-												}); // Add a copy of extractedTextbook
-												console.log("push");
-												console.log(extractedTextbook);
+												}); 
+												//console.log(extractedTextbook);
 												extractedTextbook = {}; //extractedTextbookをリセット
 											}
 											extractedTextbook["書名"] = (item3.replace('書名:', ''));
@@ -82,20 +84,19 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 						}
 					});
 
-					// Add the last extractedTextbook to extractedTextbooks
+					//  extractedTextbookをextractedTextbooksに追加
 					if (Object.keys(extractedTextbook).length !== 0) {
 						extractedTextbooks.push({
 							...extractedTextbook
 						});
-						console.log("push");
-						console.log(extractedTextbook);
+						//console.log(extractedTextbook);
 					}
 
 					syllabusData['教科書'] = extractedTextbooks;
 					return syllabusData;
 				})
 				.catch(error => {
-					console.error('テキストブックの取得中にエラーが発生しました:', error);
+					console.error('教科書の取得中にエラーが発生しました:', error);
 					return null;
 				});
 		})
@@ -106,7 +107,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 }
 
 
-
+//content.jsから呼び出す
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.action === 'getSyllabus') {
 		getSyllabusData(request.url, request.search_department, request.search_teacher)
