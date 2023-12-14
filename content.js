@@ -105,11 +105,23 @@ function main() {
 								</thead>`;
 
           let tableBody = '<tbody>';
+		  let shops="";
           textbooksData.forEach((textbook) => {
               if (textbook && textbook["講義名"] && textbook["担当教員"] && textbook["教科書"] && textbook["教科書"][0]) {
                   const { 講義名, 担当教員, 教科書 } = textbook;
                   const { 書名, 著者名, 出版社, 備考 } = 教科書[0];
-
+				  if(書名.includes("電子教科書")){
+					shops=`<p>電子教科書の購入は教員の指示に従ってください。</p>`;
+				  }else{
+					shops=`<li><a data="${書名} ${著者名}" href="https://mykits.kinokuniya.co.jp/Login/37002cfd-c010-4ae5-bcc4-e94f9a3fa48b" target="_blank">紀伊国屋書店</a></li>
+											<li><a href="https://www.amazon.co.jp/s?k=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">amazon</a></li>
+											<li><a href="https://www.mercari.com/jp/search/?keyword=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">メルカリ</a></li>
+											<li><a href="https://paypayfleamarket.yahoo.co.jp/search/${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">paypayフリマ</a></li>
+											<li><a href="https://fril.jp/s?query=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">ラクマ</a></li>
+											<li><a href="https://auctions.yahoo.co.jp/search/search?p=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">ヤフオク</a></li>
+											<li><a href="https://www.google.com/search?q=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}&tbm=shop" target="_blank">Google ショッピング</a></li>`;
+				  }
+					
                   tableBody += `<tr>
 									<td>${講義名 ? 講義名 : ''}</td>
 									<td>${担当教員 ? 担当教員 : ''}</td>
@@ -119,13 +131,7 @@ function main() {
 									<td>${備考 ? 備考 : ''}</td>
 									<td class="shops text-nowrap">
 										<ul>
-											<li><a data="${書名} ${著者名}" href="https://mykits.kinokuniya.co.jp/Login/37002cfd-c010-4ae5-bcc4-e94f9a3fa48b" target="_blank">紀伊国屋書店</a></li>
-											<li><a href="https://www.amazon.co.jp/s?k=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">amazon</a></li>
-											<li><a href="https://www.mercari.com/jp/search/?keyword=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">メルカリ</a></li>
-											<li><a href="https://paypayfleamarket.yahoo.co.jp/search/${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">paypayフリマ</a></li>
-											<li><a href="https://fril.jp/s?query=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">ラクマ</a></li>
-											<li><a href="https://auctions.yahoo.co.jp/search/search?p=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}" target="_blank">ヤフオク</a></li>
-											<li><a href="https://www.google.com/search?q=${書名 ? 書名 : ''}+${著者名 ? 著者名 : ''}&tbm=shop" target="_blank">Google ショッピング</a></li>
+											${shops}
 										</ul>
 									</td>      
 							    </tr>`;
