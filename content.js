@@ -88,7 +88,8 @@ function main() {
           const tabId = `#tab${index + 1}`;
           document.querySelector(tabId).innerHTML += `<h4>購入教科書一覧</h4>
 		  <div class="alert alert-info" role="alert">
-			紀伊国屋書店をクリックした場合、教科書内容がクリップボードにコピーされた後ログイン画面に飛びます。
+			紀伊国屋書店をクリックした場合、教科書内容がクリップボードにコピーされた後ログイン画面に飛びます。<br>
+			電子教科書は教員の指示に従って購入してください。
 		  </div>
 		  `;
 
@@ -110,7 +111,7 @@ function main() {
               if (textbook && textbook["講義名"] && textbook["担当教員"] && textbook["教科書"] && textbook["教科書"][0]) {
                   const { 講義名, 担当教員, 教科書 } = textbook;
                   const { 書名, 著者名, 出版社, 備考 } = 教科書[0];
-				  if(書名.includes("電子教科書")){
+				  if(書名.includes("電子教科書") || 書名.includes("電子書籍")){
 					shops=`<p>電子教科書の購入は教員の指示に従ってください。</p>`;
 				  }else{
 					shops=`<li><a data="${書名} ${著者名}" href="https://mykits.kinokuniya.co.jp/Login/37002cfd-c010-4ae5-bcc4-e94f9a3fa48b" target="_blank">紀伊国屋書店</a></li>
