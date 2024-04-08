@@ -21,7 +21,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 		.then(response => response.text())
 		.then(data => {
 			let htmlString = data;
-
+			console.log(htmlString);
 			const regex = /<tr>\s*<td>(.*?)<\/td>\s*<td>(.*?)<\/td>\s*<td>(.*?)<\/td>\s*<td><a href="(.*?)"[^>]*>詳細<\/a><\/td>\s*<\/tr>/g;
 			let match;
 			let syllabusData;
@@ -44,7 +44,7 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 				console.log(search_department + "," + search_teacher + "先生の" + search_word + "の講義は見つかりませんでした。");
 				return null;
 			}
-
+			console.log(syllabusData);
 			// 教科書の取得
 			return getTextbook(syllabusData['詳細'])
 				.then(textbookResult => {

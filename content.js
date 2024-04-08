@@ -1,5 +1,7 @@
 //シラバスを検索する関数（background.jsを呼び出す）
 function SeacrhSyllabusByWord(url, search_department, search_teacher) {
+    //urlから（4単位）のような文字列を削除
+    url=url.replace(/（\d+単位）/g, '');
   return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage({
           action: 'getSyllabus',
@@ -8,6 +10,7 @@ function SeacrhSyllabusByWord(url, search_department, search_teacher) {
           search_teacher
       }, response => {
           if (response) {
+              console.log(response);
               resolve(response.data);
           } else {
               reject(new Error('Failed to fetch data from background'));
@@ -63,7 +66,8 @@ function main() {
 
 
   //各学期ごとに保存する変数
-  let textbooks_tmp = [[], [], [], [], []];
+    let textbooks_tmp = [[], [], [], [], []]; //前半と後半に分かれている場合（2023まで？）
+    //let textbooks_tmp = [[], [], []];
   for (const term in timetable) {
       for (const week in timetable[term]) {
           for (const day in timetable[term][week]) {
@@ -78,12 +82,13 @@ function main() {
           }
       }
   }
-
+	console.log(textbooks_tmp);
   const promises = textbooks_tmp.map((textbooks, index) => {
       return Promise.all(textbooks.map(searchText => {
           const [subject, teacher] = searchText.split('_');
           return SeacrhSyllabusByWord(subject, department, teacher);
       })).then(textbooksData => {
+		  console.log(textbooksData);
 		  //tabのidを保存する
           const tabId = `#tab${index + 1}`;
           document.querySelector(tabId).innerHTML += `<h4>購入教科書一覧</h4>
