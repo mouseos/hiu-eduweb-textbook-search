@@ -25,11 +25,13 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 			const regex = /<tr>\s*<td>(.*?)<\/td>\s*<td>(.*?)<\/td>\s*<td>(.*?)<\/td>\s*<td><a href="(.*?)"[^>]*>詳細<\/a><\/td>\s*<\/tr>/g;
 			let match;
 			let syllabusData;
-
+			
 			while ((match = regex.exec(htmlString)) !== null) {
+				console.log('match');
+				console.log(match);
 				const [, lectureName, department, teacher, detailLink] = match;
 				
-				if (department.toLowerCase().includes(search_department.trim().toLowerCase())&& teacher.trim().toLowerCase() === search_teacher.trim().toLowerCase()) {
+				if (department.toLowerCase().includes(search_department.trim().toLowerCase())&& teacher.trim().toLowerCase().indexOf(search_teacher.trim().toLowerCase()) !== -1) {
 					syllabusData = {
 						'講義名': lectureName.trim(),
 						'学科': department.trim(),
