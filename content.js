@@ -66,8 +66,8 @@ function main() {
 
 
   //各学期ごとに保存する変数
-    let textbooks_tmp = [[], [], [], [], []]; //前半と後半に分かれている場合（2023まで？）
-    //let textbooks_tmp = [[], [], []];
+    //let textbooks_tmp = [[], [], [], [], []]; //前半と後半に分かれている場合（2023まで？）
+    let textbooks_tmp = [[], [], []];
   for (const term in timetable) {
       for (const week in timetable[term]) {
           for (const day in timetable[term][week]) {

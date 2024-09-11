@@ -512,9 +512,13 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 			while ((match = regex.exec(htmlString)) !== null) {
 				//console.log('match');
 				//console.log(match);
-				const [, lectureName, department, teacher, detailLink] = match;
-				
-				if (department.toLowerCase().includes(replaceMajorWithDepartment(search_department.trim().toLowerCase()))&& replace_old_kanji(teacher.trim().toLowerCase()).indexOf(replace_old_kanji(search_teacher.trim().toLowerCase())) !== -1) {
+				let [, lectureName, department, teacher, detailLink] = match;
+				//専攻を学科に置き換え
+				search_department = replaceMajorWithDepartment(search_department);
+				//スペースの種類を統一
+				teacher = teacher.replace("　"," ");
+				search_teacher = search_teacher.replace("　"," ");
+				if (department.toLowerCase().includes((search_department.trim().toLowerCase()))&& replace_old_kanji(teacher.trim().toLowerCase()).indexOf(replace_old_kanji(search_teacher.trim().toLowerCase())) !== -1) {
 					syllabusData = {
 						'講義名': lectureName.trim(),
 						'学科': department.trim(),
