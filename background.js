@@ -473,6 +473,16 @@ function replace_old_kanji(str) {
     });
     return str;
 }
+//専攻名を学科名に置き換える
+function replaceMajorWithDepartment(major) {
+    const majorToDepartment = {
+        "デザイン専攻": "情報メディア学部情報メディア学科",
+        "テクノロジー専攻": "情報メディア学部情報メディア学科"
+    };
+
+    return majorToDepartment[major] || major;
+}
+
 function getTextbook(url) {
 	return fetch(url)
 		.then(response => response.text())
@@ -500,11 +510,11 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 			let syllabusData;
 			
 			while ((match = regex.exec(htmlString)) !== null) {
-				console.log('match');
-				console.log(match);
+				//console.log('match');
+				//console.log(match);
 				const [, lectureName, department, teacher, detailLink] = match;
 				
-				if (department.toLowerCase().includes(search_department.trim().toLowerCase())&& replace_old_kanji(teacher.trim().toLowerCase()).indexOf(replace_old_kanji(search_teacher.trim().toLowerCase())) !== -1) {
+				if (department.toLowerCase().includes(replaceMajorWithDepartment(search_department.trim().toLowerCase()))&& replace_old_kanji(teacher.trim().toLowerCase()).indexOf(replace_old_kanji(search_teacher.trim().toLowerCase())) !== -1) {
 					syllabusData = {
 						'講義名': lectureName.trim(),
 						'学科': department.trim(),
@@ -518,6 +528,8 @@ function getSyllabusData(search_word, search_department, search_teacher) {
 				//見つからない場合コンソール出力（デバッグ）
 				console.log(search_department + "," + search_teacher + "先生の" + search_word + "の講義は見つかりませんでした。");
 				return null;
+			}else{
+				console.log(search_department + "," + search_teacher + "先生の" + search_word + "の講義が見つかりました。");
 			}
 			console.log(syllabusData);
 			// 教科書の取得
